@@ -30,33 +30,6 @@ class SSE extends EventEmmiter {
             this.removeListener('data', responseHandler);
         });
 
-        client.connect(err => {
-            if (err) throw err;
-            const collection = client.db('product').collection('clientsProduct');
-            const Report = client.db('reports').collection('report');
-            collection.find({}).toArray((err, result) => {
-                if (err) throw err;
-                this.send({
-                    message: 'data extracted correctly',
-                    data : result,
-                    extracted: true
-                }, 'command');
-                //client.close();
-            });
-            setTimeout(() => {Report.find({}).toArray((err, result) => {
-                if (err) throw err;
-                this.send({
-                    message: 'data extracted correctly',
-                    data : result,
-                    extracted: true
-                }, 'report');
-                client.close();
-            })}, 5000);
-
-
-        })
-    }
-
     send = (data, event) => {
         this.emit('data', {data, event});
     }
